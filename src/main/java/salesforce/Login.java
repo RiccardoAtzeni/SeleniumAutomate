@@ -1,5 +1,6 @@
 package salesforce;
 
+import core.AutomateException;
 import core.Driver;
 import org.apache.log4j.Logger;
 import org.apache.xpath.operations.Bool;
@@ -36,6 +37,9 @@ public class Login extends BasicProcess{
 
         try{
             driver.navigateTo(SF_URL);
+            if(!driver.getCurrentUrl().equalsIgnoreCase(SF_URL))
+                throw new AutomateException("Navigate to SF login page failed. Current url: "+driver.getCurrentUrl()+"\n"+
+                    "Make sure you have any proxy disabled (automatic Internet provider rendering web page, too)");
             driver.sendKeys(By.id("username"),user);
             driver.sendKeys(By.id("password"),pwd);
             driver.getElement(By.id("Login")).submit();
@@ -50,7 +54,7 @@ public class Login extends BasicProcess{
                 driver.click(By.id("thePage:inputForm:continue"));
             }
         }catch(Exception ex){
-            if(ex instanceof TimeoutException){
+            if(ex instanceof TimeoutException || ex instanceof AutomateException){
                 if(maxRetry>0 && retry<=maxRetry){
                     try {
                         driver.setWait((timeout)*((++retry)+1));

@@ -61,14 +61,26 @@ public class RecreateSyncPublish implements BasicFlow{
             case "LOGIN_OK" :
                  Recreate recreate = new Recreate(config.getProperty("recreate.process.timeout"),config.getProperty("recreate.retry"));
                  if(recreate.fire(driver)){
-                     status="RECREATE_OK";
-                     end();
+                     setStatus("RECREATE_OK");
+                     next();
+
                  }
                  else{
-                     status="RECREATE_KO";
+                     setStatus("RECREATE_KO");
                      end();
                  }
                  break;
+            case "RECREATE_OK" :
+                Synch synch = new Synch(config.getProperty("synch.process.timeout"),config.getProperty("synch.retry"));
+                if(synch.fire(driver)){
+                    setStatus("SYNC_CAT_RULES_OK");
+                    end();
+                }
+                else{
+                    setStatus("SYNC_CAT_RULES_KO");
+                    end();
+                }
+                break;
         }
     }
 

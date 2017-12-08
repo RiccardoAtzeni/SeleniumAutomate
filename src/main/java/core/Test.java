@@ -3,7 +3,9 @@ package core;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -32,7 +34,7 @@ public class Test {
     }
 
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws InterruptedException {
 		try {
 			config = Property.getInstance();
 			PropertyConfigurator.configure(new FileInputStream(config.getProperty("log4j.config")));
