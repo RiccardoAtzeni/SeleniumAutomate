@@ -57,13 +57,13 @@ public class RecreateSyncPublish implements BasicFlow{
 
     @Override
     public void next() {
+        Synch synch = null;
         switch (status){
             case "LOGIN_OK" :
                  Recreate recreate = new Recreate(config.getProperty("recreate.process.timeout"),config.getProperty("recreate.retry"));
                  if(recreate.fire(driver)){
                      setStatus("RECREATE_OK");
                      next();
-
                  }
                  else{
                      setStatus("RECREATE_KO");
@@ -71,21 +71,41 @@ public class RecreateSyncPublish implements BasicFlow{
                  }
                  break;
             case "RECREATE_OK" :
-                Synch synch = new Synch(config.getProperty("synch.process.timeout"),config.getProperty("synch.retry"));
+                synch = new Synch(config.getProperty("synch.process.timeout"),config.getProperty("synch.retry"));
                 if(synch.fire(driver)){
                     setStatus("SYNC_CAT_RULES_OK");
-                    end();
+                    next();
                 }
                 else{
                     setStatus("SYNC_CAT_RULES_KO");
                     end();
                 }
                 break;
+            case "SYNC_CAT_RULES_OK" :
+                Publish pub = new Publish(config.getProperty("publish.process.timeout"),config.getProperty("publish.retry"));
+                if(pub.fire(driver)){
+                    setStatus("PUBLISH_OK");
+                    next();
+                }
+                else
+                {
+                    setStatus("PUBLISH_KO");
+                    end();
+                }
+                break;
+            case "PUBLISH_OK" :
+                    synch= new Synch(config.getProperty("synch.archetype.timeout"),config.getProperty("synch.archetype.retry"));
+                    if(synch.fireArchetypes(driver))
+                        setStatus("COMPLETED");
+                    else
+                        setStatus("SYNC_ARCH_KO");
+                    end();
+                    break;
         }
     }
 
     @Override
     public void end() {
-        //driver.finish();
+        driver.finish();
     }
 }

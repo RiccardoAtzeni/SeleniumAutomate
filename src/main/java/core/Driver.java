@@ -8,9 +8,7 @@ import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -30,6 +28,7 @@ public class Driver {
 	private WebDriverWait webwait;
 	private JavascriptExecutor js;
 	private EventFiringWebDriver eventDriver;
+	private String beforeWin;
 
 	private Driver(String pathChromeDriver) throws IOException{
 		service = new ChromeDriverService.Builder()
@@ -62,9 +61,7 @@ public class Driver {
 		return driver;
 	}
 
-	public String getCurrentUrl() {
-		return webDriver.getCurrentUrl();
-	}
+	public String getCurrentUrl() {	return webDriver.getCurrentUrl();}
 
 	public void setWait(long timeout){
 		if(webwait==null)
@@ -73,6 +70,10 @@ public class Driver {
 			log.warn("Override element timeout: "+timeout);
 		webwait = new WebDriverWait(webDriver,timeout);
 	}
+
+	public String getBeforeWin(){ return beforeWin;}
+
+	public void setBeforeWin(String beforeWin){	this.beforeWin=beforeWin;}
 
 	public void click(By by){
 		try{
@@ -85,27 +86,35 @@ public class Driver {
 	}
 
 
-	public WebElement getElement(By by){
+	public WebElement getElement(By by,Boolean wait){
 		WebElement element=null;
 		try{
-			element = webwait.until(ExpectedConditions.elementToBeClickable(by));
-			log.debug("Retrieving the element "+element.getTagName()+": "+element.getText()+". Found "+by);
+			if(wait)
+				element = webwait.until(ExpectedConditions.elementToBeClickable(by));
+			else
+				element = webDriver.findElement(by);
 		}catch(Exception ex){
 			if(ex instanceof NoSuchElementException){
 				log.warn("No element found for following criteria: "+by.toString());
+				return null;
+			}
+			else if(ex instanceof TimeoutException){
+				log.warn(ex.getMessage());
 				return null;
 			}
 			else if(ex instanceof UnhandledAlertException){
 				acceptAlert();
 			}
 			else{
-				log.error("getElement() throwed the following exception: "+ex.getClass()+"\n"+ex.getMessage());
+				log.error("getElement() throwed the following exception: "+ex);
 				throw ex;
 			}
 
 		}finally {
-			if(element!=null)
+			if(element!=null){
+				log.debug("Retrieved the element "+element.getTagName()+": "+element.getText()+" "+by);
 				return element;
+			}
 			else
 				return null;
 		}
@@ -137,6 +146,7 @@ public class Driver {
 
 	public void finish(){
 		eventDriver.quit();
+		webDriver.quit();
 		service.stop();
 	}
 

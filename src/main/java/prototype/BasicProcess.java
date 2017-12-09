@@ -12,29 +12,47 @@ public abstract class BasicProcess {
 
     public abstract boolean fire(Driver driver);
 
-    public boolean awaitCompleted(long timeout, long pause, Driver driver, By action, By condition){
+    public boolean awaitCompleted(long timeout, long pause, Driver driver, By start, By end) {
         int retry=0;
-        long start = System.nanoTime();
-        long elapsed = TimeUnit.MINUTES.convert((System.nanoTime()-start), TimeUnit.NANOSECONDS);
-        WebElement trigger;
-        do{
-            trigger = driver.getElement(action);
-        }while(trigger==null);
-        trigger.click();
+        long init = System.nanoTime();
+        long elapsed = TimeUnit.MINUTES.convert((System.nanoTime()-init), TimeUnit.NANOSECONDS);
 
-        while(driver.getElement(condition)==null && elapsed<timeout){
+        if(start!=null){
+            WebElement condition=driver.getElement(start,false);
+            while(condition==null && elapsed<timeout){
+                log.warn("Element searched "+start+" NOT FOUND.\n\nRETRY n."+(++retry));
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    log.error(e.getMessage());
+                    return false;
+                }
+                elapsed = TimeUnit.MINUTES.convert((System.nanoTime()-init), TimeUnit.NANOSECONDS);
+                log.info("***Elapsed time: "+elapsed+" minutes since the begging of the retrieving process***");
+                condition = driver.getElement(start,false);
+            }
+
+            if(condition==null){
+                log.error("Timeout reached: impossible to retry the element searched "+start);
+                return false;
+            }
+            retry=0;
+            elapsed=0L;
+        }
+
+        while(driver.getElement(end,false)==null && elapsed<timeout){
             try {
+                log.warn("Element searched "+end+" NOT FOUND.\n\nRETRY n."+(++retry));
+                elapsed = TimeUnit.MINUTES.convert((System.nanoTime()-init), TimeUnit.NANOSECONDS);
+                log.info("***Elapsed time: "+elapsed+" minutes since the begging of the retrieving process***");
                 Thread.sleep(pause);
-                log.info("Elapsed time: "+elapsed+" minutes");
-                elapsed = TimeUnit.MINUTES.convert((System.nanoTime()-start), TimeUnit.NANOSECONDS);
-                log.warn("Element searched "+condition+" not found.\nRetry n: "+(++retry));
             } catch (InterruptedException e) {
-                log.error("Thread sleep throwed the following: "+e.getMessage());
+                log.error(e);
                 return false;
             }
         }
         if(elapsed>timeout){
-            log.error("Timeout reached");
+            log.error("Timeout reached: impossible to retry the element searched "+end);
             return false;
         }
         else{

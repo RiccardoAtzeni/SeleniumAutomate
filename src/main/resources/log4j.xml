@@ -9,10 +9,10 @@
     </appender>
     <appender name="Console" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%5p [%t] - %m%n"/>
+            <param name="ConversionPattern" value="%5p - %m%n"/>
         </layout>
     </appender>
-    <!-- TODO: Disable the fucking Apache http log! Below xml does not make the trick
+    <!--
     <logger name="httpclient.wire.content">
         <level value="WARN"/>
     </logger>

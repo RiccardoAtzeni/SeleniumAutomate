@@ -15,9 +15,9 @@ import salesforce.cpq.catalog.RecreateSyncPublish;
 
 public class Test {
 	private final static String STARTLOG=
-			"\n\n\n###################################################START LOG SESSION########################################################";
+			"###################################################START LOG SESSION########################################################";
 	private final static String ENDLOG=
-			"\n\n\n###################################################END LOG SESSION########################################################";
+			"###################################################END LOG SESSION########################################################\n\n\n";
 	private static Logger log;
 	private static Property config;
 
@@ -34,7 +34,7 @@ public class Test {
     }
 
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args){
 		try {
 			config = Property.getInstance();
 			PropertyConfigurator.configure(new FileInputStream(config.getProperty("log4j.config")));
@@ -44,7 +44,7 @@ public class Test {
 		}
 		log = Logger.getLogger(Test.class);
 		log.info(STARTLOG);
-		BasicFlow process = new RecreateSyncPublish();
+		new RecreateSyncPublish();
 		log.info(ENDLOG);
 	}
 }

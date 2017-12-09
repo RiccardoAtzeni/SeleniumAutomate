@@ -40,7 +40,6 @@ public class Property {
     public String getProperty(String key){
         if(properties==null)
             init();
-
         return properties.getProperty(key);
     }
 }

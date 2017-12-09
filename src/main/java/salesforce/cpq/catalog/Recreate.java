@@ -20,7 +20,6 @@ public class Recreate extends BasicProcess {
             this.timeout=30;
             this.pause=30;
         }
-
     }
 
     @Override
@@ -28,14 +27,15 @@ public class Recreate extends BasicProcess {
         driver.click(By.cssSelector("img.allTabsArrow"));
         driver.click(By.linkText("Catalogs"));
         driver.click(By.linkText("Fastweb Master Catalog"));
-        String beforeWin = driver.getWindowHandle();
+        driver.setBeforeWin(driver.getWindowHandle());
         driver.click(By.name("ne__publish_all_items"));
         for(String actualWin: driver.getWindowHandles())
             driver.switchToWin(actualWin);
         driver.click(By.xpath("(//input[@type='checkbox'])[1]"));
         driver.click(By.xpath("(//input[@type='checkbox'])[2]"));
 
-        if(awaitCompleted(timeout,pause,driver,By.xpath("//input[@value='Recreate programs']"),
+        driver.click(By.xpath("//input[@value='Recreate programs']"));
+        if(awaitCompleted(timeout,pause,driver,By.xpath("//td[starts-with(span,'Starting')]"),
                 By.xpath("//td[starts-with(span,'Process completed')]")))
             return true;
         else return false;

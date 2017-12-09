@@ -37,13 +37,13 @@ public class Login extends BasicProcess{
 
         try{
             driver.navigateTo(SF_URL);
-            if(!driver.getCurrentUrl().equalsIgnoreCase(SF_URL))
+            if(!driver.getCurrentUrl().contains("salesforce"))
                 throw new AutomateException("Navigate to SF login page failed. Current url: "+driver.getCurrentUrl()+"\n"+
                     "Make sure you have any proxy disabled (automatic Internet provider rendering web page, too)");
             driver.sendKeys(By.id("username"),user);
             driver.sendKeys(By.id("password"),pwd);
-            driver.getElement(By.id("Login")).submit();
-            String header = driver.getElement(By.id("header")).getText();
+            driver.getElement(By.id("Login"),true).submit();
+            String header = driver.getElement(By.id("header"),true).getText();
             if(header.equalsIgnoreCase("Verify Your Identity")){
                 log.error("For security reason you need to fill your verification code in the Salesforce login page");
                 log.error("Please make that and fire the app again");
@@ -55,6 +55,7 @@ public class Login extends BasicProcess{
             }
         }catch(Exception ex){
             if(ex instanceof TimeoutException || ex instanceof AutomateException){
+                log.error(ex.getMessage());
                 if(maxRetry>0 && retry<=maxRetry){
                     try {
                         driver.setWait((timeout)*((++retry)+1));
