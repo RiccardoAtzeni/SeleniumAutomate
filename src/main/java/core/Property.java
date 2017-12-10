@@ -8,6 +8,7 @@ import java.util.Properties;
 public class Property {
     private static Property config;
     private final static String CONFIGFILE="properties/config.properties";
+    //private final static String CONFIGFILE="./config.properties";
     private static Properties properties;
 
     private Property(){}

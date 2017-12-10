@@ -1,0 +1,186 @@
+2017-12-10 19:01:04 INFO  -###################################################START LOG SESSION########################################################
+2017-12-10 19:01:04 INFO  -Retrieving configuration property
+2017-12-10 19:01:04 INFO  -Starting ChromeDriverService to http://localhost:46999
+2017-12-10 19:01:07 DEBUG  -Setting element timeout: 15 seconds
+2017-12-10 19:01:07 INFO  -RecreateSyncPublish Status: STARTED
+2017-12-10 19:01:07 DEBUG  -Starting login process
+2017-12-10 19:01:07 DEBUG  -Navigate to: http://test.salesforce.com
+2017-12-10 19:01:12 DEBUG  -Filling the element found By.id: username -> r.atzeni@reply.it.cpqdevpro2
+2017-12-10 19:01:12 DEBUG  -Filling the element found By.id: password -> Amerigatti5
+2017-12-10 19:01:12 DEBUG  -Retrieved the element input:  By.id: Login
+2017-12-10 19:01:16 DEBUG  -Retrieved the element h2: TLS Upgrade Required By.id: header
+2017-12-10 19:01:16 DEBUG  -TLS Upgrade Required. Submit continue
+2017-12-10 19:01:16 DEBUG  -Clicking on input:  searched By.id: thePage:inputForm:continue
+2017-12-10 19:01:27 INFO  -RecreateSyncPublish Status: LOGIN_OK
+2017-12-10 19:01:27 INFO  -Correct URL!
+2017-12-10 19:01:27 DEBUG  -Clicking on img:  searched By.cssSelector: img.allTabsArrow
+2017-12-10 19:01:35 DEBUG  -Clicking on a: Catalogs searched By.linkText: Catalogs
+2017-12-10 19:01:36 DEBUG  -Clicking on a: Fastweb Master Catalog searched By.linkText: Fastweb Master Catalog
+2017-12-10 19:01:44 DEBUG  -Clicking on input:  searched By.name: ne__publish_all_items
+2017-12-10 19:01:44 DEBUG  -Switching to window: CDwindow-8d370d45-8d4e-4e4a-9702-3dd1d15379f2
+2017-12-10 19:01:44 DEBUG  -Switching to window: CDwindow-e8abe199-2c52-44c5-97fa-d2b3712f7f62
+2017-12-10 19:01:45 DEBUG  -Clicking on input:  searched By.xpath: (//input[@type='checkbox'])[1]
+2017-12-10 19:01:45 DEBUG  -Clicking on input:  searched By.xpath: (//input[@type='checkbox'])[2]
+2017-12-10 19:01:46 DEBUG  -Clicking on input:  searched By.xpath: //input[@value='Recreate programs']
+2017-12-10 19:01:46 INFO  -CONDITION EVALUETED: By.xpath: //td[starts-with(span,'Starting')]
+2017-12-10 19:01:46 WARN  -Alert open 'The action synchronizes Salesforce data with the engine, are you sure?'
+2017-12-10 19:01:46 WARN  -RETRY n.1
+2017-12-10 19:01:46 INFO  -Elapsed time: 0 minutes since the begging of the retrieving process
+2017-12-10 19:01:51 DEBUG  -Retrieved the element td: Starting... 6/88 By.xpath: //td[starts-with(span,'Starting')]
+2017-12-10 19:01:51 DEBUG  -Check item retrieved By.xpath: //td[starts-with(span,'Starting')]. Proceed to check the end condition for the process
+
+2017-12-10 19:01:51 INFO  -CONDITION EVALUETED: By.xpath: //td[starts-with(span,'Process completed')]
+2017-12-10 19:01:51 WARN  -No element found for following criteria: By.xpath: //td[starts-with(span,'Process completed')]
+
+2017-12-10 19:01:51 WARN  -RETRY n.1
+2017-12-10 19:01:51 INFO  -Elapsed time: 0 minutes since the begging of the retrieving process
+2017-12-10 19:02:51 DEBUG  -Retrieved the element td: Process completed! 88/88 By.xpath: //td[starts-with(span,'Process completed')]
+2017-12-10 19:02:51 DEBUG  -Process completed!
+
+2017-12-10 19:02:51 INFO  -RecreateSyncPublish Status: RECREATE_OK
+2017-12-10 19:02:51 DEBUG  -Clicking on input:  searched By.xpath: //input[@value='Synch all rules']
+2017-12-10 19:02:51 INFO  -CONDITION EVALUETED: By.xpath: //td[starts-with(span,'Starting')]
+2017-12-10 19:02:51 WARN  -Alert open 'The action synchronizes Salesforce data with the engine, are you sure?'
+2017-12-10 19:02:51 WARN  -RETRY n.1
+2017-12-10 19:02:51 INFO  -Elapsed time: 0 minutes since the begging of the retrieving process
+2017-12-10 19:02:56 DEBUG  -Retrieved the element td: Starting... 1/2323 By.xpath: //td[starts-with(span,'Starting')]
+2017-12-10 19:02:56 DEBUG  -Check item retrieved By.xpath: //td[starts-with(span,'Starting')]. Proceed to check the end condition for the process
+
+2017-12-10 19:02:56 INFO  -CONDITION EVALUETED: By.xpath: //td[starts-with(span,'Process completed')]
+2017-12-10 19:02:56 WARN  -No element found for following criteria: By.xpath: //td[starts-with(span,'Process completed')]
+
+2017-12-10 19:02:56 WARN  -RETRY n.1
+2017-12-10 19:02:56 INFO  -Elapsed time: 0 minutes since the begging of the retrieving process
+2017-12-10 19:17:56 WARN  -No element found for following criteria: By.xpath: //td[starts-with(span,'Process completed')]
+
+2017-12-10 19:17:56 WARN  -RETRY n.2
+2017-12-10 19:17:56 INFO  -Elapsed time: 15 minutes since the begging of the retrieving process
+2017-12-10 19:32:56 WARN  -No element found for following criteria: By.xpath: //td[starts-with(span,'Process completed')]
+
+2017-12-10 19:32:56 WARN  -RETRY n.3
+2017-12-10 19:32:56 INFO  -Elapsed time: 30 minutes since the begging of the retrieving process
+2017-12-10 19:47:56 WARN  -No element found for following criteria: By.xpath: //td[starts-with(span,'Process completed')]
+
+2017-12-10 19:47:56 WARN  -RETRY n.4
+2017-12-10 19:47:56 INFO  -Elapsed time: 45 minutes since the begging of the retrieving process
+2017-12-10 20:02:56 WARN  -No element found for following criteria: By.xpath: //td[starts-with(span,'Process completed')]
+
+2017-12-10 20:02:56 WARN  -RETRY n.5
+2017-12-10 20:02:56 INFO  -Elapsed time: 60 minutes since the begging of the retrieving process
+2017-12-10 20:17:56 WARN  -No element found for following criteria: By.xpath: //td[starts-with(span,'Process completed')]
+
+2017-12-10 20:17:56 WARN  -RETRY n.6
+2017-12-10 20:17:56 INFO  -Elapsed time: 75 minutes since the begging of the retrieving process
+2017-12-10 20:32:56 WARN  -No element found for following criteria: By.xpath: //td[starts-with(span,'Process completed')]
+
+2017-12-10 20:32:56 WARN  -RETRY n.7
+2017-12-10 20:32:56 INFO  -Elapsed time: 90 minutes since the begging of the retrieving process
+2017-12-10 20:47:56 WARN  -No element found for following criteria: By.xpath: //td[starts-with(span,'Process completed')]
+
+2017-12-10 20:47:56 WARN  -RETRY n.8
+2017-12-10 20:47:56 INFO  -Elapsed time: 105 minutes since the begging of the retrieving process
+2017-12-10 21:02:56 DEBUG  -Retrieved the element td: Process completed! 2323/2323 By.xpath: //td[starts-with(span,'Process completed')]
+2017-12-10 21:02:56 DEBUG  -Process completed!
+
+2017-12-10 21:02:56 INFO  -RecreateSyncPublish Status: SYNC_CAT_RULES_OK
+2017-12-10 21:02:56 DEBUG  -Clicking on input:  searched By.xpath: //input[@value='Publish Catalog']
+2017-12-10 21:02:56 INFO  -CONDITION EVALUETED: By.xpath: //div[@id='loadingMex' and string-length(text())>0]
+2017-12-10 21:02:56 WARN  -No element found for following criteria: By.xpath: //div[@id='loadingMex' and string-length(text())>0]
+
+2017-12-10 21:02:56 WARN  -RETRY n.1
+2017-12-10 21:02:56 INFO  -Elapsed time: 0 minutes since the begging of the retrieving process
+2017-12-10 21:03:01 DEBUG  -Retrieved the element div: Publish Category: Fastweb Master Catalog By.xpath: //div[@id='loadingMex' and string-length(text())>0]
+2017-12-10 21:03:01 DEBUG  -Check item retrieved By.xpath: //div[@id='loadingMex' and string-length(text())>0]. Proceed to check the end condition for the process
+
+2017-12-10 21:03:01 INFO  -CONDITION EVALUETED: By.xpath: //input[@value='Publish Catalog']
+2017-12-10 21:03:01 WARN  -No element found for following criteria: By.xpath: //input[@value='Publish Catalog']
+
+2017-12-10 21:03:01 WARN  -RETRY n.1
+2017-12-10 21:03:01 INFO  -Elapsed time: 0 minutes since the begging of the retrieving process
+2017-12-10 21:03:32 WARN  -No element found for following criteria: By.xpath: //input[@value='Publish Catalog']
+
+2017-12-10 21:03:32 WARN  -RETRY n.2
+2017-12-10 21:03:32 INFO  -Elapsed time: 0 minutes since the begging of the retrieving process
+2017-12-10 21:04:02 WARN  -No element found for following criteria: By.xpath: //input[@value='Publish Catalog']
+
+2017-12-10 21:04:02 WARN  -RETRY n.3
+2017-12-10 21:04:02 INFO  -Elapsed time: 1 minutes since the begging of the retrieving process
+2017-12-10 21:04:32 WARN  -No element found for following criteria: By.xpath: //input[@value='Publish Catalog']
+
+2017-12-10 21:04:32 WARN  -RETRY n.4
+2017-12-10 21:04:32 INFO  -Elapsed time: 1 minutes since the begging of the retrieving process
+2017-12-10 21:05:02 WARN  -No element found for following criteria: By.xpath: //input[@value='Publish Catalog']
+
+2017-12-10 21:05:02 WARN  -RETRY n.5
+2017-12-10 21:05:02 INFO  -Elapsed time: 2 minutes since the begging of the retrieving process
+2017-12-10 21:05:32 DEBUG  -Retrieved the element input:  By.xpath: //input[@value='Publish Catalog']
+2017-12-10 21:05:32 DEBUG  -Process completed!
+
+2017-12-10 21:05:32 INFO  -RecreateSyncPublish Status: PUBLISH_OK
+2017-12-10 21:05:32 DEBUG  -Switching to window: CDwindow-8d370d45-8d4e-4e4a-9702-3dd1d15379f2
+2017-12-10 21:05:32 DEBUG  -Clicking on input:  searched By.name: bit2archetypes__manage_archetypes
+2017-12-10 21:05:32 DEBUG  -Switching to window: CDwindow-8d370d45-8d4e-4e4a-9702-3dd1d15379f2
+2017-12-10 21:05:32 DEBUG  -Switching to window: CDwindow-e8abe199-2c52-44c5-97fa-d2b3712f7f62
+2017-12-10 21:05:32 DEBUG  -Switching to window: CDwindow-774321c4-4334-438e-9b70-84c5b372e95a
+2017-12-10 21:05:34 INFO  -URL: https://fastweb01--cpqdevpro2--bit2archetypes.cs88.visual.force.com/apex/ManageArchetypes?catId=a3i9E0000001BYn
+2017-12-10 21:05:34 DEBUG  -Retrieved the element select:                                                     
+                                                All
+Fastweb Master Catalog
+Anchor Item, Version: 1
+And GO, Version: 1
+Business Class, Version: 1
+Business Class Freedom Edition, Version: 1
+Business Class Special, Version: 1
+Business Class Special Edition, Version: 1
+Fastweb Special, Version: 1
+Giga Web, Version: 1
+GigaWeb Special Edition, Version: 1
+Internet, Version: 1
+Internet Mobile prepagata, Version: 1
+Internet Mobile 2GB, Version: 1
+Internet+Telefono, Version: 1
+Jet, Version: 1
+Jet, Version: 2
+Jet SHP, Version: 1
+Joy, Version: 1
+Joy Freedom SHP, Version: 1
+Joy Full, Version: 1
+Joy SHP, Version: 1
+JOYFULL, Version: 1
+Mobile Dipendenti, Version: 1
+Mobile Freedom, Version: 1
+Mobile Freedom Smartphone Edition, Version: 1
+Mobile Fuel, Version: 1
+Mobile Fuel - Special Edition, Version: 1
+Mobile Fuel 500, Version: 1
+Mobile Special, Version: 1
+Mobile 100, Version: 1
+Mobile 250, Version: 1
+Mobile 500, Version: 1
+Mobile 500 Special Edition, Version: 1
+Naviga Mobile Retention, Version: 1
+Naviga Mobile 2GB, Version: 1
+Naviga Mobile 5GB, Version: 1
+SIMpaty, Version: 1
+SIMpaty RETENTION, Version: 1
+SIMpaty senza scatto, Version: 1
+Sprint Web, Version: 1
+Super Web, Version: 1
+Superjet, Version: 1
+Supersurf, Version: 1
+Voce Ricaricabile, Version: 1 By.id: rowsFilterOptions
+2017-12-10 21:05:40 DEBUG  -Retrieved the element button: Start Synch By.xpath: //button[@onclick='synchAllRows();return false;']
+2017-12-10 21:05:40 WARN  -The button is Disabled
+2017-12-10 21:05:45 DEBUG  -Retrieved the element button: Start Synch By.xpath: //button[@onclick='synchAllRows();return false;']
+2017-12-10 21:05:45 INFO  -CONDITION EVALUETED: By.xpath: //div[div='Process completed!']
+2017-12-10 21:05:45 WARN  -Alert open 'The action synchronizes Salesforce data with the engine, are you sure?'
+2017-12-10 21:05:45 WARN  -RETRY n.1
+2017-12-10 21:05:45 INFO  -Elapsed time: 0 minutes since the begging of the retrieving process
+2017-12-10 21:20:45 WARN  -No element found for following criteria: By.xpath: //div[div='Process completed!']
+
+2017-12-10 21:20:45 WARN  -RETRY n.2
+2017-12-10 21:20:45 INFO  -Elapsed time: 15 minutes since the begging of the retrieving process
+2017-12-10 21:35:45 WARN  -No element found for following criteria: By.xpath: //div[div='Process completed!']
+
+2017-12-10 21:35:45 WARN  -RETRY n.3
+2017-12-10 21:35:45 INFO  -Elapsed time: 30 minutes since the begging of the retrieving process
