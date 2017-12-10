@@ -2,11 +2,13 @@ package core;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.Set;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -16,7 +18,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Driver {
 	private static final Logger log = Logger.getLogger(Driver.class);
-
 	private static Driver driver;
 	private static boolean exist=false;
 	private ChromeDriverService service;
@@ -24,6 +25,7 @@ public class Driver {
 	private WebDriverWait webwait;
 	private JavascriptExecutor js;
 	private EventFiringWebDriver eventDriver;
+	private String beforeWin;
 
 	private Driver(String pathChromeDriver) throws IOException{
 		service = new ChromeDriverService.Builder()
@@ -32,11 +34,19 @@ public class Driver {
 				.build();
 		service.start();
 		log.info("Starting ChromeDriverService to "+service.getUrl());
-		DesiredCapabilities chromecap = DesiredCapabilities.chrome();
-		chromecap.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
-		webDriver =new RemoteWebDriver(service.getUrl(), chromecap);
+		webDriver =new RemoteWebDriver(service.getUrl(), customCapabilities());
 		eventDriver = new EventFiringWebDriver(webDriver);
 		js= (JavascriptExecutor) webDriver;
+	}
+
+	private DesiredCapabilities customCapabilities(){
+		DesiredCapabilities chromecap = DesiredCapabilities.chrome();
+		LoggingPreferences logs = new LoggingPreferences();
+		logs.enable(LogType.BROWSER,Level.OFF);
+		logs.enable(LogType.DRIVER,Level.OFF);
+		logs.enable(LogType.PERFORMANCE,Level.OFF);
+		chromecap.setCapability(CapabilityType.LOGGING_PREFS,logs);
+		return chromecap;
 	}
 
 	
@@ -48,9 +58,7 @@ public class Driver {
 		return driver;
 	}
 
-	public WebDriver getWebDriver() {
-		return webDriver;
-	}
+	public String getCurrentUrl() {	return webDriver.getCurrentUrl();}
 
 	public void setWait(long timeout){
 		if(webwait==null)
@@ -60,38 +68,48 @@ public class Driver {
 		webwait = new WebDriverWait(webDriver,timeout);
 	}
 
+	public String getBeforeWin(){ return beforeWin;}
+
+	public void setBeforeWin(String beforeWin){	this.beforeWin=beforeWin;}
+
 	public void click(By by){
-		WebElement element = webwait.until(ExpectedConditions.elementToBeClickable(by));
-		log.debug("Clicking on "+element.getTagName()+": "+element.getText()+"Found "+by);
-			try{
-				element.click();
+		try{
+			WebElement element = webwait.until(ExpectedConditions.elementToBeClickable(by));
+			log.debug("Clicking on "+element.getTagName()+": "+element.getText()+" searched "+by);
+			element.click();
 			}catch(UnhandledAlertException ex){
 				acceptAlert();
 			}
 	}
 
-
-	public WebElement getElement(By by){
+	public WebElement getElement(By by,Boolean wait){
 		WebElement element=null;
 		try{
-			element = webwait.until(ExpectedConditions.elementToBeClickable(by));
-			log.debug("Retrieving the element "+element.getTagName()+": "+element.getText()+". Found "+by);
+			if(wait)
+				element = webwait.until(ExpectedConditions.elementToBeClickable(by));
+			else
+				element = webDriver.findElement(by);
 		}catch(Exception ex){
 			if(ex instanceof NoSuchElementException){
-				log.warn("No element found for following criteria: "+by.toString());
+				log.warn("No element found for following criteria: "+by.toString()+"\n");
+				return null;
+			}
+			else if(ex instanceof TimeoutException){
+				log.warn(ex.getMessage());
 				return null;
 			}
 			else if(ex instanceof UnhandledAlertException){
 				acceptAlert();
 			}
 			else{
-				log.error("getElement() throwed the following exception: "+ex.getClass()+"\n"+ex.getMessage());
+				log.error("getElement() throwed the following exception: "+ex);
 				throw ex;
 			}
-
 		}finally {
-			if(element!=null)
+			if(element!=null){
+				log.debug("Retrieved the element "+element.getTagName()+": "+element.getText()+" "+by);
 				return element;
+			}
 			else
 				return null;
 		}
@@ -123,6 +141,7 @@ public class Driver {
 
 	public void finish(){
 		eventDriver.quit();
+		webDriver.quit();
 		service.stop();
 	}
 

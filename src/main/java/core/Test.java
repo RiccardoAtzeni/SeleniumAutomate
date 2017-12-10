@@ -7,15 +7,16 @@ import java.util.Date;
 import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import prototype.BasicFlow;
-import salesforce.cpq.catalog.RecreateSyncPublish;
+import salesforce.cpq.catalog.flows.RecreateSyncPublish;
 
 
 public class Test {
 	private final static String STARTLOG=
-			"\n\n\n###################################################START LOG SESSION########################################################";
+			"###################################################START LOG SESSION########################################################";
 	private final static String ENDLOG=
-			"\n\n\n###################################################END LOG SESSION########################################################";
+			"###################################################END LOG SESSION########################################################\n\n\n";
+	private final static String LOG4J_CONFIG="src/main/resources/log4j.xml";
+	//private final static String LOG4J_CONFIG="./log4j.xml";
 	private static Logger log;
 	private static Property config;
 
@@ -35,14 +36,14 @@ public class Test {
 	public static void main(String[] args){
 		try {
 			config = Property.getInstance();
-			PropertyConfigurator.configure(new FileInputStream(config.getProperty("log4j.config")));
+			PropertyConfigurator.configure(new FileInputStream(LOG4J_CONFIG));
 		} catch (FileNotFoundException e) {
 			log.error("Log4j property file not found: "+e.getMessage());
 			return;
 		}
 		log = Logger.getLogger(Test.class);
 		log.info(STARTLOG);
-		BasicFlow process = new RecreateSyncPublish();
+		new RecreateSyncPublish();
 		log.info(ENDLOG);
 	}
 }
