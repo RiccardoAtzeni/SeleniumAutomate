@@ -1,17 +1,16 @@
-package salesforce.cpq.catalog;
+package salesforce.cpq.catalog.processes;
 
-import core.AutomateException;
 import core.Driver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import prototype.BasicProcess;
+import java.util.ArrayList;
 
 public class Synch extends BasicProcess {
     private static final Logger log = Logger.getLogger(Synch.class);
-    long timeout;
-    long pause;
+    long timeout,pause;
 
     public Synch(String timeout, String pause){
         try{
@@ -19,9 +18,9 @@ public class Synch extends BasicProcess {
             this.pause=Long.valueOf(pause.trim());
         }catch(Exception ex){
             log.warn("Error occurred: "+ex.getMessage());
-            log.warn("Using default timeout(6 hours) and retry(10 minutes) for Synch process");
-            this.timeout=360;
-            this.pause=30000;
+            log.warn("Using default timeout(4 hours) and retry(15 minutes) for Synch process");
+            this.timeout=240;
+            this.pause=900000;
         }
     }
 
@@ -29,10 +28,9 @@ public class Synch extends BasicProcess {
     public boolean fire(Driver driver) {
         try {
             driver.click(By.xpath("//input[@value='Synch all rules']"));
-            if (awaitCompleted(timeout, pause, driver, By.xpath("//td[starts-with(span,'Starting')]"),
-                    By.xpath("//td[starts-with(span,'Process completed')]")))
-                return true;
-            else return false;
+            return awaitCompleted(timeout, pause, driver, new ArrayList<By>(){{
+                add(By.xpath("//td[starts-with(span,'Starting')]"));
+                add(By.xpath("//td[starts-with(span,'Process completed')]"));}});
         } catch (Exception ex) {
             log.error(ex);
             return false;
@@ -48,9 +46,9 @@ public class Synch extends BasicProcess {
         driver.click(By.name("bit2archetypes__manage_archetypes"));
         for(String actualWin: driver.getWindowHandles())
             driver.switchToWin(actualWin);
+        log.info("URL: "+driver.getCurrentUrl());
         new Select(driver.getElement(By.id("rowsFilterOptions"),true)).selectByVisibleText("All");
         WebElement synch=null;
-
         do{
             if(synch!=null)
                 log.warn("The button is Disabled");
@@ -64,10 +62,11 @@ public class Synch extends BasicProcess {
         }while(synch==null || synch.getAttribute("disabled")!=null);
         synch.click();
 
-        if(awaitCompleted(timeout,pause,driver,null,
-                By.xpath("//div[div='Process completed!']")))
-            return true;
-        else return false;
+
+        return awaitCompleted(timeout,pause,driver,new ArrayList<By>(){{
+            add(null);
+            add(By.xpath("//div[div='Process completed!']"));}});
+
     }
 
 }

@@ -1,10 +1,13 @@
-package salesforce.cpq.catalog;
-
+package salesforce.cpq.catalog.flows;
 import core.Driver;
 import core.Property;
 import org.apache.log4j.Logger;
 import prototype.BasicFlow;
-import salesforce.Login;
+import salesforce.cpq.catalog.Navigate;
+import salesforce.cpq.catalog.processes.Login;
+import salesforce.cpq.catalog.processes.Publish;
+import salesforce.cpq.catalog.processes.Recreate;
+import salesforce.cpq.catalog.processes.Synch;
 
 public class RecreateSyncPublish implements BasicFlow{
 
@@ -16,7 +19,6 @@ public class RecreateSyncPublish implements BasicFlow{
     public RecreateSyncPublish(){
         initDriver();
     }
-
 
     public void setStatus(String status) {
         if(status.contains("KO"))
@@ -47,30 +49,32 @@ public class RecreateSyncPublish implements BasicFlow{
                 config.getProperty("find.element.timeout"));
         if(login.fire(driver)){
             setStatus("LOGIN_OK");
-            next();
+            if(Navigate.navigateToCatalog(driver,config.getProperty("user"),config.getProperty("domin")))
+                next();
+            else
+                setStatus("NAVIGATE_CATALOG_KO");
         }
-        else{
+        else
             setStatus("LOGIN_KO");
-            end();
-        }
+        end();
     }
 
     @Override
     public void next() {
-        Synch synch = null;
-        switch (status){
-            case "LOGIN_OK" :
-                 Recreate recreate = new Recreate(config.getProperty("recreate.process.timeout"),config.getProperty("recreate.retry"));
-                 if(recreate.fire(driver)){
-                     setStatus("RECREATE_OK");
-                     next();
-                 }
-                 else{
-                     setStatus("RECREATE_KO");
-                     end();
-                 }
-                 break;
-            case "RECREATE_OK" :
+        try {
+            Synch synch = null;
+            switch (status) {
+                case "LOGIN_OK":
+                    Recreate recreate = new Recreate(config.getProperty("recreate.process.timeout"), config.getProperty("recreate.retry"));
+                    if (recreate.fire(driver)) {
+                        setStatus("RECREATE_OK");
+                        next();
+                    } else {
+                        setStatus("RECREATE_KO");
+                        end();
+                    }
+                    break;
+                case "RECREATE_OK":
                 synch = new Synch(config.getProperty("synch.process.timeout"),config.getProperty("synch.retry"));
                 if(synch.fire(driver)){
                     setStatus("SYNC_CAT_RULES_OK");
@@ -82,26 +86,29 @@ public class RecreateSyncPublish implements BasicFlow{
                 }
                 break;
             case "SYNC_CAT_RULES_OK" :
-                Publish pub = new Publish(config.getProperty("publish.process.timeout"),config.getProperty("publish.retry"));
-                if(pub.fire(driver)){
-                    setStatus("PUBLISH_OK");
-                    next();
-                }
-                else
-                {
-                    setStatus("PUBLISH_KO");
-                    end();
-                }
-                break;
-            case "PUBLISH_OK" :
-                    synch= new Synch(config.getProperty("synch.archetype.timeout"),config.getProperty("synch.archetype.retry"));
-                    if(synch.fireArchetypes(driver))
+                    Publish pub = new Publish(config.getProperty("publish.process.timeout"), config.getProperty("publish.retry"));
+                    if (pub.fire(driver)) {
+                        setStatus("PUBLISH_OK");
+                        next();
+                    } else {
+                        setStatus("PUBLISH_KO");
+                        end();
+                    }
+                    break;
+                case "PUBLISH_OK":
+                    synch = new Synch(config.getProperty("synch.archetype.timeout"), config.getProperty("synch.archetype.retry"));
+                    if (synch.fireArchetypes(driver))
                         setStatus("COMPLETED");
                     else
                         setStatus("SYNC_ARCH_KO");
                     end();
                     break;
-        }
+            }
+        }catch(Exception ex){
+                log.error(ex);
+                end();
+            }
+
     }
 
     @Override

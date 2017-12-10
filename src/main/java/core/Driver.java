@@ -2,10 +2,8 @@ package core;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.Set;
 import java.util.logging.Level;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -20,7 +18,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Driver {
 	private static final Logger log = Logger.getLogger(Driver.class);
-
 	private static Driver driver;
 	private static boolean exist=false;
 	private ChromeDriverService service;
@@ -78,13 +75,12 @@ public class Driver {
 	public void click(By by){
 		try{
 			WebElement element = webwait.until(ExpectedConditions.elementToBeClickable(by));
-			log.debug("Clicking on "+element.getTagName()+": "+element.getText()+"Found "+by);
+			log.debug("Clicking on "+element.getTagName()+": "+element.getText()+" searched "+by);
 			element.click();
 			}catch(UnhandledAlertException ex){
 				acceptAlert();
 			}
 	}
-
 
 	public WebElement getElement(By by,Boolean wait){
 		WebElement element=null;
@@ -95,7 +91,7 @@ public class Driver {
 				element = webDriver.findElement(by);
 		}catch(Exception ex){
 			if(ex instanceof NoSuchElementException){
-				log.warn("No element found for following criteria: "+by.toString());
+				log.warn("No element found for following criteria: "+by.toString()+"\n");
 				return null;
 			}
 			else if(ex instanceof TimeoutException){
@@ -109,7 +105,6 @@ public class Driver {
 				log.error("getElement() throwed the following exception: "+ex);
 				throw ex;
 			}
-
 		}finally {
 			if(element!=null){
 				log.debug("Retrieved the element "+element.getTagName()+": "+element.getText()+" "+by);

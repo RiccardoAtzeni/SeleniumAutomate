@@ -3,14 +3,11 @@ package core;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import prototype.BasicFlow;
-import salesforce.cpq.catalog.RecreateSyncPublish;
+import salesforce.cpq.catalog.flows.RecreateSyncPublish;
 
 
 public class Test {

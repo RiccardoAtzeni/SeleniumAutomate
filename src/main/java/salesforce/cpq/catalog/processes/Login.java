@@ -1,31 +1,26 @@
-package salesforce;
+package salesforce.cpq.catalog.processes;
 
 import core.AutomateException;
 import core.Driver;
 import org.apache.log4j.Logger;
-import org.apache.xpath.operations.Bool;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import prototype.BasicProcess;
 
 public class Login extends BasicProcess{
     private static final String SF_URL = "http://test.salesforce.com";
     private static Logger log = Logger.getLogger(Login.class);
-    private String user;
-    private String pwd;
-    private int maxRetry;
-    private int retry;
+    private String user,pwd;
+    private int retry,maxRetry;
     private long timeout;
 
     public Login(String user, String pwd, String retry, String timeout){
-        this.user=user;
+        this.user=user.trim();
         this.pwd=pwd;
         this.retry=0;
         try{
-            maxRetry = Integer.valueOf(retry)>0? Integer.valueOf(retry) : 0;
-            this.timeout = Long.valueOf(timeout);
+            maxRetry = Integer.valueOf(retry.trim())>0? Integer.valueOf(retry.trim()) : 0;
+            this.timeout = Long.valueOf(timeout.trim());
         }catch(NumberFormatException ex){
             maxRetry=0;
             this.timeout=0L;
@@ -46,7 +41,7 @@ public class Login extends BasicProcess{
             String header = driver.getElement(By.id("header"),true).getText();
             if(header.equalsIgnoreCase("Verify Your Identity")){
                 log.error("For security reason you need to fill your verification code in the Salesforce login page");
-                log.error("Please make that and fire the app again");
+                log.error("Please make that and launch the app again");
                 return false;
             }
             else if(header.equalsIgnoreCase("TLS Upgrade Required")){
